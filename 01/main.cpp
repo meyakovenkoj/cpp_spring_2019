@@ -39,9 +39,9 @@ int search(int a, int b, int &s, int &e){
 		}
 	}
 	if(s == -1 || e == -1)
-		return 1;
-	else
 		return 0;
+	else
+		return 1;
 }
 
 void init(bool (&primes)[Size]){
@@ -56,16 +56,15 @@ int main(int argc, char* argv[]){
 		return -1;
 	bool primes[Size] = {false};
 	int c = 1;
-	int count,a,b;
+	int count,a,b,s,e;
 	init(primes);
 	while (c < argc) {
 		count = 0;
+		s = -1;
+		e = -1;
 		a = std::atoi(argv[c]);
 		b = std::atoi(argv[++c]);
-		if (b >= a){
-			int s = -1,e = -1;
-			if(search(a, b, s, e))
-				break;
+		if (search(a, b, s, e)){
 			for(int i = s; i < e; i++){
 				if(primes[i])
 					count++;
