@@ -26,11 +26,17 @@ int is_prime(int a)
 
 
 int search(int a, int b, int &s, int &e){
+	bool t = false;
 	for(int i = 0; i<Size; i++){
-		if(s == -1 && Data[i] == a)
+		if(s == -1 && Data[i] == a){
 			s = i;
-		if(Data[i] == b)
-			e = i;
+			t = true;
+		}
+		if(Data[Size - 1 - i] == b){
+			e = Size - 1 - i;
+			if(t)
+				break;
+		}
 	}
 	if(s == -1 || e == -1)
 		return 1;
@@ -38,11 +44,20 @@ int search(int a, int b, int &s, int &e){
 		return 0;
 }
 
+void init(bool (&primes)[Size]){
+	for(int i = 0; i<Size; i++){
+		if(is_prime(Data[i]))
+			primes[i] = true;
+	}
+}
+
 int main(int argc, char* argv[]){
 	if (argc == 1 || !(argc % 2))
 		return -1;
+	bool primes[Size] = {false};
 	int c = 1;
 	int count,a,b;
+	init(primes);
 	while (c < argc) {
 		count = 0;
 		a = std::atoi(argv[c]);
@@ -52,7 +67,7 @@ int main(int argc, char* argv[]){
 			if(search(a, b, s, e))
 				break;
 			for(int i = s; i < e; i++){
-				if(is_prime(Data[i]))
+				if(primes[i])
 					count++;
 			}
 		}
