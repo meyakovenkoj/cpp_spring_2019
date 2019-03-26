@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <stdexcept>
 class Matrix
 {
 private:
@@ -9,15 +10,15 @@ private:
 		size_t columns;
 		std::vector<int> row;
 	public:
-		Row(size_t columns_num = 0) : columns(columns_num) 
+		Row(size_t columns_num = 0) : columns(columns_num)
 		{
 			row = std::vector<int>(columns_num);
 		}
-		Row(const Row& another) : columns(another.getColumns()) 
+		Row(const Row& another) : columns(another.getColumns())
 		{
 			row = std::vector<int>(another.row);
 		}
-		Row(Row&& another) : columns(another.getColumns()) 
+		Row(Row&& another) : columns(another.getColumns())
 		{
 			row = std::vector<int>(another.row);
 		}
@@ -27,14 +28,14 @@ private:
 		}
 		const int& operator[](size_t i) const
 		{
-			if(i >= columns)
+			if(i< 0 || i >= columns)
 				throw std::out_of_range("Out of size");
 			else
 				return row[i];
 		}
 		int& operator[](size_t i)
 		{
-			if(i >= columns)
+			if(i< 0 || i >= columns)
 				throw std::out_of_range("Out of size");
 			else
 				return row[i];
@@ -84,7 +85,7 @@ public:
 		for (size_t i = 0; i < rows; i++)
 			data[i] = Row(columns);
 	}
-	Matrix(const Matrix& another) 
+	Matrix(const Matrix& another)
 	{
 		columns = another.getColumns();
 		rows = another.getRows();
@@ -106,13 +107,13 @@ public:
 	}
 	const Row& operator[](size_t i) const
 	{
-		if (i >= columns)
+		if (i< 0 || i >= rows)
 			throw std::out_of_range("Out of size");
 		return data[i];
 	}
 	Row& operator[](size_t i)
 	{
-		if (i >= columns)
+		if (i< 0 || i >= rows)
 			throw std::out_of_range("Out of size");
 		return data[i];
 	}
@@ -132,17 +133,16 @@ public:
 	}
 	Matrix& operator*=(const int i)
 	{
-		for(int k = 0; k < getColumns(); k++)
-				data[k] *= i;
+		for(int k = 0; k < getRows(); k++)
+			data[k] *= i;
 		return *this;
 	}
 	const bool operator==(const Matrix& another) const
 	{
-		if(columns != another.getColumns())
+		
+		if(columns != another.getColumns() || rows != another.getRows())
 			return false;
-		if(rows != another.getRows())
-			return false;
-		for(int k = 0; k < getColumns(); k++)
+		for(int k = 0; k < getRows(); k++)
 			if(data[k] != another[k])
 				return false;
 		return true;
