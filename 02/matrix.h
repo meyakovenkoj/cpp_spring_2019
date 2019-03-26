@@ -9,136 +9,149 @@ private:
 		size_t columns;
 		std::vector<int> row;
 	public:
-		Row(size_t columns_num = 0) : columns(columns_num) {
+		Row(size_t columns_num = 0) : columns(columns_num) 
+		{
 			row = std::vector<int>(columns_num);
 		}
-		Row(const Row& obj) {
-			columns = obj.getColumns();
-			row = std::vector<int>(obj.row);
+		Row(const Row& another) : columns(another.getColumns()) 
+		{
+			row = std::vector<int>(another.row);
 		}
-		Row(Row&& obj){
-			columns = obj.getColumns();
-			row = std::vector<int>(obj.row);
+		Row(Row&& another) : columns(another.getColumns()) 
+		{
+			row = std::vector<int>(another.row);
 		}
-		size_t getColumns() const{
+		size_t getColumns() const
+		{
 			return columns;
 		}
-		const int& operator[](size_t i) const{
+		const int& operator[](size_t i) const
+		{
 			if(i >= columns)
 				throw std::out_of_range("Out of size");
 			else
 				return row[i];
 		}
-		int& operator[](size_t i){
+		int& operator[](size_t i)
+		{
 			if(i >= columns)
 				throw std::out_of_range("Out of size");
 			else
 				return row[i];
 		}
-		Row& operator=(const Row& smatr){
-			columns = smatr.getColumns();
-			row = std::vector<int>(smatr.row);
+		Row& operator=(const Row& another)
+		{
+			columns = another.getColumns();
+			row = std::vector<int>(another.row);
 			return *this;
 		}
-		Row& operator=(Row&& smatr){
-			columns = smatr.getColumns();
-			row = std::vector<int>(smatr.row);
+		Row& operator=(Row&& another)
+		{
+			columns = another.getColumns();
+			row = std::vector<int>(another.row);
 			return *this;
 		}
-		Row& operator*=(const int i){
+		Row& operator*=(const int i)
+		{
 			for(int k = 0; k < getColumns(); k++)
 				row[k] *= i;
 			return *this;
 		}
-		const bool operator==(const Row& smatr) const{
-			if(columns != smatr.getColumns())
+		const bool operator==(const Row& another) const
+		{
+			if(columns != another.getColumns())
 				return false;
 			for(int k = 0; k < getColumns(); k++)
-				if(row[k] != smatr[k])
+				if(row[k] != another[k])
 					return false;
 			return true;
 		}
-		const bool operator!=(const Row& smatr) const{
-			if(columns != smatr.getColumns())
-				return true;
-			for(int k = 0; k < getColumns(); k++)
-				if(row[k] != smatr[k])
-					return true;
-			return false;
+		const bool operator!=(const Row& another) const
+		{
+			return !(*this == another);
 		}
-		~Row(){}
+		~Row()
+		{
+		}
 	};
 	size_t rows;
 	size_t columns;
 	std::vector<Row> data;
 public:
-	Matrix(size_t row_num, size_t columns_num) : rows(row_num), columns(columns_num){
+	Matrix(size_t row_num, size_t columns_num) : rows(row_num), columns(columns_num)
+	{
 		data = std::vector<Row>(rows);
 		for (size_t i = 0; i < rows; i++)
 			data[i] = Row(columns);
 	}
-	Matrix(const Matrix& obj) {
-		columns = obj.getColumns();
-		rows = obj.getRows();
-		data = std::vector<Row>(obj.data);
+	Matrix(const Matrix& another) 
+	{
+		columns = another.getColumns();
+		rows = another.getRows();
+		data = std::vector<Row>(another.data);
 	}
-	Matrix(Matrix&& obj){
-		columns = obj.getColumns();
-		rows = obj.getRows();
-		data = std::vector<Row>(obj.data);
+	Matrix(Matrix&& another)
+	{
+		columns = another.getColumns();
+		rows = another.getRows();
+		data = std::vector<Row>(another.data);
 	}
-	size_t getRows() const{
+	size_t getRows() const
+	{
 		return this->rows;
 	}
-	size_t getColumns() const{
+	size_t getColumns() const
+	{
 		return this->columns;
 	}
-	const Row& operator[](size_t i) const{
+	const Row& operator[](size_t i) const
+	{
 		if (i >= columns)
 			throw std::out_of_range("Out of size");
 		return data[i];
 	}
-	Row& operator[](size_t i){
+	Row& operator[](size_t i)
+	{
 		if (i >= columns)
 			throw std::out_of_range("Out of size");
 		return data[i];
 	}
-	Matrix& operator=(const Matrix& smatr){
-		columns = smatr.getColumns();
-		rows = smatr.getRows();
-		data = std::vector<Row>(smatr.data);
+	Matrix& operator=(const Matrix& another)
+	{
+		columns = another.getColumns();
+		rows = another.getRows();
+		data = std::vector<Row>(another.data);
 		return *this;
 	}
-	Matrix& operator=(Matrix&& smatr){
-		columns = smatr.getColumns();
-		rows = smatr.getRows();
-		data = std::vector<Row>(smatr.data);
+	Matrix& operator=(Matrix&& another)
+	{
+		columns = another.getColumns();
+		rows = another.getRows();
+		data = std::vector<Row>(another.data);
 		return *this;
 	}
-	Matrix& operator*=(const int i){
+	Matrix& operator*=(const int i)
+	{
 		for(int k = 0; k < getColumns(); k++)
-			data[k] *= i;
+				data[k] *= i;
 		return *this;
 	}
-	const bool operator==(const Matrix& smatr) const{
-		if(columns != smatr.getColumns())
+	const bool operator==(const Matrix& another) const
+	{
+		if(columns != another.getColumns())
 			return false;
-		if(rows != smatr.getRows())
+		if(rows != another.getRows())
 			return false;
 		for(int k = 0; k < getColumns(); k++)
-			if(data[k] != smatr[k])
+			if(data[k] != another[k])
 				return false;
 		return true;
 	}
-	const bool operator!=(const Matrix& smatr) const{
-		if(columns != smatr.getColumns())
-			return true;
-		if(rows != smatr.getRows())
-			return true;
-		for(int k = 0; k < getColumns(); k++)
-			if(data[k] != smatr[k])
-				return true;
-		return false;
+	const bool operator!=(const Matrix& another) const
+	{
+		return !(*this == another);
 	}
-	~Matrix(){}
+	~Matrix()
+	{
+	}
 };
