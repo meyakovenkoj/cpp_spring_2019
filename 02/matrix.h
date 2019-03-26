@@ -58,7 +58,7 @@ private:
 				row[k] *= i;
 			return *this;
 		}
-		const bool operator==(const Row& another) const
+		bool operator==(const Row& another) const
 		{
 			if(columns != another.getColumns())
 				return false;
@@ -67,7 +67,7 @@ private:
 					return false;
 			return true;
 		}
-		const bool operator!=(const Row& another) const
+		bool operator!=(const Row& another) const
 		{
 			return !(*this == another);
 		}
@@ -137,7 +137,7 @@ public:
 			data[k] *= i;
 		return *this;
 	}
-	const bool operator==(const Matrix& another) const
+	bool operator==(const Matrix& another) const
 	{
 		
 		if(columns != another.getColumns() || rows != another.getRows())
@@ -147,7 +147,7 @@ public:
 				return false;
 		return true;
 	}
-	const bool operator!=(const Matrix& another) const
+	bool operator!=(const Matrix& another) const
 	{
 		return !(*this == another);
 	}
