@@ -17,11 +17,11 @@ private:
 		Row(const Row& another) : columns(another.getColumns()), row(std::vector<int>(another.row))
 		{
 		}
-		Row(Row&& another) : columns(another.columns), row(std::vector<int>(another.row))
+		/*Row(Row&& another) : columns(another.columns), row(std::vector<int>(another.row))
 		{
 			another.columns = 0;
 			another.row.clear();
-		}
+		}*/
 		size_t getColumns() const
 		{
 			return columns;
@@ -46,14 +46,14 @@ private:
 			row = std::vector<int>(another.row);
 			return *this;
 		}
-		Row& operator=(Row&& another)
+		/*Row& operator=(Row&& another)
 		{
 			std::swap(columns, another.columns);
 			row.swap(another.row);
 			another.columns = 0;
 			another.row.clear();
 			return *this;
-		}
+		}*/
 		Row& operator*=(int i)
 		{
 			for(int k = 0; k < getColumns(); k++)
@@ -87,12 +87,12 @@ public:
 	Matrix(const Matrix& another) : rows(another.getRows()), columns(another.getColumns()), data(std::vector<Row>(another.data))
 	{
 	}
-	Matrix(Matrix&& another) : rows(another.getRows()), columns(another.getColumns()), data(std::vector<Row>(another.data))
+	/*Matrix(Matrix&& another) : rows(another.getRows()), columns(another.getColumns()), data(std::vector<Row>(another.data))
 	{
 		another.rows = 0;
 		another.columns = 0;
 		another.data.clear();
-	}
+	}*/
 	size_t getRows() const
 	{
 		return rows;
@@ -120,7 +120,7 @@ public:
 		data = std::vector<Row>(another.data);
 		return *this;
 	}
-	Matrix& operator=(Matrix&& another)
+	/*Matrix& operator=(Matrix&& another)
 	{
 		std::swap(rows, another.rows);
 		std::swap(columns, another.columns);
@@ -129,7 +129,7 @@ public:
 		another.columns = 0;
 		another.data.clear();
 		return *this;
-	}
+	}*/
 	Matrix& operator*=(int i)
 	{
 		for(int k = 0; k < getRows(); k++)
