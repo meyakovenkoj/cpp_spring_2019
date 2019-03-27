@@ -17,10 +17,10 @@ private:
 		Row(const Row& another) : columns(another.getColumns()), row(std::vector<int>(another.row))
 		{
 		}
-		Row(Row&& another)
+		Row(Row&& another) : columns(another.columns), row(std::vector<int>(another.row))
 		{
-			std::swap(columns, another.columns);
-			row.swap(another.row);
+			another.columns = 0;
+			another.row.clear();
 		}
 		size_t getColumns() const
 		{
@@ -50,6 +50,8 @@ private:
 		{
 			std::swap(columns, another.columns);
 			row.swap(another.row);
+			another.columns = 0;
+			another.row.clear();
 			return *this;
 		}
 		Row& operator*=(int i)
@@ -85,11 +87,11 @@ public:
 	Matrix(const Matrix& another) : rows(another.getRows()), columns(another.getColumns()), data(std::vector<Row>(another.data))
 	{
 	}
-	Matrix(Matrix&& another)
+	Matrix(Matrix&& another) : rows(another.getRows()), columns(another.getColumns()), data(std::vector<Row>(another.data))
 	{
-		std::swap(rows, another.rows);
-		std::swap(columns, another.columns);
-		data.swap(another.data);
+		another.rows = 0;
+		another.columns = 0;
+		another.data.clear();
 	}
 	size_t getRows() const
 	{
@@ -123,6 +125,9 @@ public:
 		std::swap(rows, another.rows);
 		std::swap(columns, another.columns);
 		data.swap(another.data);
+		another.rows = 0;
+		another.columns = 0;
+		another.data.clear();
 		return *this;
 	}
 	Matrix& operator*=(int i)
