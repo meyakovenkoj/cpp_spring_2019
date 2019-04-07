@@ -42,7 +42,9 @@ private:
 		}
 		Row& operator=(const Row& another)
 		{
-			columns = another.getColumns();
+			if(*this == another)
+				return *this;
+			columns = another.columns;
 			row = std::vector<int>(another.row);
 			return *this;
 		}
