@@ -164,7 +164,7 @@ public:
 		threadMemLimit (memLimit / threadCount), 
 		threadUintLimit(threadMemLimit / sizeof(uint64_t)), 
 		buf(new uint64_t[memLimit / sizeof(uint64_t)]),
-		inputStream(std::ifstream(_data, std::ios::binary))
+		inputStream(_data, std::ios::binary)
 	{
 	}
 
