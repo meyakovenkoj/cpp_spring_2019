@@ -2,14 +2,12 @@
 #include <mutex>
 #include <thread>
 
-#define N 500000
-
 std::mutex m1;
 std::mutex m2;
 
 void ping()
 {
-	for(int i = 0; i < N; i++)
+	for(int i = 0; i < 500000; i++)
 	{
 		m1.lock();
 		std::cout << "ping" << std::endl;
@@ -19,7 +17,7 @@ void ping()
 
 void pong()
 {
-	for(int i = 0; i < N; i++)
+	for(int i = 0; i < 500000; i++)
 	{
 		m2.lock();
 		std::cout << "pong" << std::endl;
