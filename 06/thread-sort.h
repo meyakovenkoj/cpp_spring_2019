@@ -10,6 +10,9 @@
 #include <queue>
 #include <string>
 #include <exception>
+#include<stdexcept>
+
+static std::exception_ptr globalExceptionPtr = nullptr;
 
 std::atomic<bool> finished = false;
 std::atomic<int> finishedStep = 0;
@@ -26,7 +29,6 @@ class Thread_sort
 	int threadCount = 2;
 	size_t threadMemLimit;
 	size_t threadUintLimit;
-	//std::unique_ptr<uint64_t>  buf;
 	uint64_t * const buf;
 	std::ifstream inputStream;
 	std::queue<std::string> outputFiles;
@@ -155,9 +157,13 @@ class Thread_sort
 		}
 		std::unique_lock<std::mutex> fLock(sortFinishM);
 		++finishedSort;
+		try{
 		if (finishedSort == threadCount) {
 			if (outputFiles.empty()) throw std::logic_error("no output files");
 			else std::cout << "finished, result in file: " << outputFiles.front() << std::endl;
+		}
+		}catch(std::logic_error & err){
+			globalExceptionPtr = std::current_exception();
 		}
 	}
 
@@ -175,12 +181,18 @@ public:
 		if(!inputStream.good())
 			throw std::invalid_argument("can't open file");
 		std::vector<std::thread> threads;
+		
 		for (int i = 0; i < threadCount; ++i) {
 			threads.emplace_back(&Thread_sort::thread_sort, this, i);
 		}
+		
 		for (int i = 0; i < threadCount; ++i) {
 			threads[i].join();
 		}
+		
+		if(globalExceptionPtr)
+			std::rethrow_exception(globalExceptionPtr);
+		
 	}
 
 	~Thread_sort(){
