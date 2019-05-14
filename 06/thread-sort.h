@@ -26,7 +26,8 @@ class Thread_sort
 	int threadCount = 2;
 	size_t threadMemLimit;
 	size_t threadUintLimit;
-	std::unique_ptr<uint64_t>  buf;
+	//std::unique_ptr<uint64_t>  buf;
+	uint64_t * const buf;
 	std::ifstream inputStream;
 	std::queue<std::string> outputFiles;
 
@@ -124,7 +125,7 @@ class Thread_sort
 	}
 
 	void thread_sort(const int id) {
-		uint64_t * const buffer = buf.get() + id * threadUintLimit;
+		uint64_t * const buffer = buf + id * threadUintLimit;
 		int iteration = 0, file = 0;
 		
 		read_files(buffer, id);
@@ -147,6 +148,8 @@ class Thread_sort
 				outputFiles.pop();
 				queueLock.unlock();
 				merge_files(tmp1, tmp2, buffer, id, iteration, file);
+				std::remove(tmp1.c_str());
+				std::remove(tmp2.c_str());
 				++file;
 			}
 		}
@@ -178,6 +181,10 @@ public:
 		for (int i = 0; i < threadCount; ++i) {
 			threads[i].join();
 		}
+	}
+
+	~Thread_sort(){
+		delete [] this->buf;
 	}
 	
 };
