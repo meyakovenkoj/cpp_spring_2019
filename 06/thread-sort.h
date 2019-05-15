@@ -12,17 +12,6 @@
 #include <exception>
 #include<stdexcept>
 
-static std::exception_ptr globalExceptionPtr = nullptr;
-
-std::atomic<bool> finished = false;
-std::atomic<int> finishedStep = 0;
-std::atomic<int> finishedSort = 0;
-std::condition_variable cond;
-std::mutex sortFinishM;
-std::mutex outQueM;
-std::mutex streamReadM;
-std::mutex iterFinishM;
-
 class Thread_sort
 {
 	size_t memLimit;
@@ -32,6 +21,15 @@ class Thread_sort
 	uint64_t * const buf;
 	std::ifstream inputStream;
 	std::queue<std::string> outputFiles;
+	std::exception_ptr globalExceptionPtr = nullptr;
+	std::atomic<bool> finished = false;
+	std::atomic<int> finishedStep = 0;
+	std::atomic<int> finishedSort = 0;
+	std::condition_variable cond;
+	std::mutex sortFinishM;
+	std::mutex outQueM;
+	std::mutex streamReadM;
+	std::mutex iterFinishM;
 
 
 	void read_files(uint64_t * const buffer, const int id)
